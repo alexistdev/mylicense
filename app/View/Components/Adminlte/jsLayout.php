@@ -7,20 +7,18 @@ use Illuminate\View\Component;
 class jsLayout extends Component
 {
     /**
-     * Create a new component instance.
-     *
-     * @return void
+     * Mylicense v.1.0
+     * created: 18-12-2021
+     * Author: AlexistDev
+     * Email: Alexistdev@gmail.com
+     * phone: 0813-7982-3241
      */
+
     public function __construct()
     {
         //
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\Contracts\View\View|\Closure|string
-     */
     public function render()
     {
         return view('components.adminlte.js-layout');

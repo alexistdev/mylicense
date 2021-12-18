@@ -4,7 +4,7 @@ namespace App\View\Components\Adminlte;
 
 use Illuminate\View\Component;
 
-class FooterLayout extends Component
+class NavbarLayout extends Component
 {
     /**
      * Mylicense v.1.0
@@ -19,8 +19,9 @@ class FooterLayout extends Component
         //
     }
 
+
     public function render()
     {
-        return view('components.adminlte.footer-layout');
+        return view('components.adminlte.navbar-layout');
     }
 }
