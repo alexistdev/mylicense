@@ -29,10 +29,18 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $request->authenticate();
-
         $request->session()->regenerate();
-
-        return redirect()->intended(RouteServiceProvider::HOME);
+        $role = Auth::user();
+        /** Cek Auth Role */
+        if($role->role_id == 1){
+            return redirect()->intended(RouteServiceProvider::SUPERADMIN);
+        } elseif($role->role_id  == 2) {
+            return redirect()->intended(RouteServiceProvider::ADMIN);
+        } elseif($role->role_id  == 3) {
+            return redirect()->intended(RouteServiceProvider::STORE);
+        } else {
+            return redirect()->intended(RouteServiceProvider::USER);
+        }
     }
 
     /**
