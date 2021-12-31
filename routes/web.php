@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{DashboardController as DashAdmin,UserController as UserAdmin};
+use App\Http\Controllers\Admin\{DashboardController as DashAdmin,UserController as UserAdmin,KategoriController as KategoriAdmin};
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +27,10 @@ Route::group(['middleware' => ['web','auth','roles']],function() {
     Route::group(['roles' => 'admin'], function () {
         Route::get('/admin/dashboard', [DashAdmin::class,'index'])->name('admin.dashboard');
         Route::get('/admin/user', [UserAdmin::class,'index'])->name('admin.user');
+
+        Route::get('/admin/kategori', [KategoriAdmin::class,'index'])->name('admin.kategori');
+        Route::post('/admin/kategori', [KategoriAdmin::class,'store'])->name('admin.savekategori');
+        Route::get('/admin/kategori/add', [KategoriAdmin::class,'create'])->name('admin.addkategori');
     });
 });
 

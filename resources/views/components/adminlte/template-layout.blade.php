@@ -3,6 +3,7 @@
     <html lang="en">
         <head>
             <x-adminlte.header-layout :title="$title"/>
+            @notifyCss
         </head>
 
         <body class="hold-transition sidebar-mini">
@@ -19,6 +20,7 @@
 
             </div>
         <!-- / Site wrapper -->
+        @notifyJs
         </body>
     </html>
 </div>

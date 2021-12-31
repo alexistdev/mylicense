@@ -282,10 +282,10 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="../gallery.html" class="nav-link">
-                            <i class="nav-icon far fa-image"></i>
+                        <a href="{{route('admin.kategori')}}" class="nav-link {{($tagSubMenu=='kategori')?"active":"";}}">
+                            <i class="nav-icon fas fa-file-alt"></i>
                             <p>
-                                Gallery
+                                Kategori
                             </p>
                         </a>
                     </li>

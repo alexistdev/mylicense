@@ -18,10 +18,10 @@ class UserSeeder extends Seeder
     {
         $date = Carbon::now()->format('Y-m-d H:i:s');
         $user = array(
-            array('role_id'=> 1,'name' => 'superadmin','email'=>'alexistdev@gmail.com','password'=> Hash::make('325339'),'created_at' => $date,'updated_at' => $date),
-            array('role_id'=> 2,'name' => 'admin','email'=>'admin@gmail.com','password'=> Hash::make('1234'),'created_at' => $date,'updated_at' => $date),
-            array('role_id'=> 3,'name' => 'store','email'=>'store@gmail.com','password'=> Hash::make('1234'),'created_at' => $date,'updated_at' => $date),
-            array('role_id'=> 4,'name' => 'user','email'=>'user@gmail.com','password'=> Hash::make('1234'),'created_at' => $date,'updated_at' => $date),
+            array('role_id'=> 1,'email'=>'alexistdev@gmail.com','password'=> Hash::make('325339'),'created_at' => $date,'updated_at' => $date),
+            array('role_id'=> 2,'email'=>'admin@gmail.com','password'=> Hash::make('1234'),'created_at' => $date,'updated_at' => $date),
+            array('role_id'=> 3,'email'=>'store@gmail.com','password'=> Hash::make('1234'),'created_at' => $date,'updated_at' => $date),
+            array('role_id'=> 4,'email'=>'user@gmail.com','password'=> Hash::make('1234'),'created_at' => $date,'updated_at' => $date),
         );
         User::insert($user);
     }
