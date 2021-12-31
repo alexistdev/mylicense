@@ -14,9 +14,13 @@ class TemplateLayout extends Component
      * phone: 0813-7982-3241
      */
 
-    public function __construct()
+    public $tagSubMenu;
+    public $title;
+
+    public function __construct($tagSubMenu,$title)
     {
-        //
+        $this->tagSubMenu = $tagSubMenu;
+        $this->title = $title;
     }
 
 

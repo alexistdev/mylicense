@@ -14,9 +14,11 @@ class SidebarLayout extends Component
      * phone: 0813-7982-3241
      */
 
-    public function __construct()
+    public $tagSubMenu;
+
+    public function __construct($tagSubMenu)
     {
-        //
+        $this->tagSubMenu = $tagSubMenu;
     }
 
     public function render()

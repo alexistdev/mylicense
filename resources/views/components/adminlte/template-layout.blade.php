@@ -2,7 +2,7 @@
     <!DOCTYPE html>
     <html lang="en">
         <head>
-            <x-adminlte.header-layout/>
+            <x-adminlte.header-layout :title="$title"/>
         </head>
 
         <body class="hold-transition sidebar-mini">
@@ -13,7 +13,7 @@
                 <!-- /.navbar -->
 
                 <!-- Main Sidebar Container -->
-                <x-adminlte.sidebar-layout/>
+                <x-adminlte.sidebar-layout :tagSubMenu="$tagSubMenu"/>
 
                 {{$slot}}
 

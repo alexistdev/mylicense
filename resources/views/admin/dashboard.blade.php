@@ -1,4 +1,4 @@
-<x-adminlte.template-layout >
+<x-adminlte.template-layout :tagSubMenu="$tagSubMenu" :title="$judul">
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">

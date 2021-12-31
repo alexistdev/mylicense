@@ -44,7 +44,7 @@ class UserController extends Controller
                 ->make(true);
         }
         return view('admin.user',array(
-            'judul' => "Dashboard Administrator | SIBEL V.2.0",
+            'judul' => "Dashboard Administrator | MILISENSI v.1.0",
             'aktifTag' => "admin",
             'tagSubMenu' => "user",
             'userName' => $this->users,

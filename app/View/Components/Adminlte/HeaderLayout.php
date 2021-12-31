@@ -13,10 +13,11 @@ class HeaderLayout extends Component
      * Email: Alexistdev@gmail.com
      * phone: 0813-7982-3241
      */
+    public $title;
 
-    public function __construct()
+    public function __construct($title)
     {
-        //
+        $this->title = $title;
     }
 
 
