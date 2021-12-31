@@ -3,6 +3,7 @@
     <html lang="en">
         <head>
             <x-adminlte.header-layout :title="$title"/>
+            <style> .notify{ z-index: 1000000; margin-top: 5%; } </style>
             @notifyCss
         </head>
 

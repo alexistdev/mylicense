@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use App\Models\User;
+use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,11 +37,17 @@ class KategoriController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $kategori = Kategori::all();
+            $kategori = Kategori::orderBy('id', 'DESC')->get();
             return DataTables::of($kategori)
                 ->addIndexColumn()
+                ->editColumn('created_at', function($data){
+                    $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d-m-Y H:i:s');
+                    return $formatedDate;
+                })
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="#" class="edit btn btn-primary btn-sm m-1"><i class="fas fa-eye"></i> View</a>';
+                    $btn = '<a href="'.route('admin.editkategori',$row->id).'" class="btn btn-success mr-1"><i class="fas fa-edit"></i></a>';
+                     $btn = $btn.   '<a href="#" data-toggle="modal" data-target="#modalHapus" data-id="' . $row->id . '" class="open-hapus btn btn-danger mr-1"><i class="fas fa-trash"></i></a>';
+
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -68,16 +75,59 @@ class KategoriController extends Controller
         ));
     }
 
+    /** route:admin.editkategori */
+    public function edit($id)
+    {
+        $kategori = Kategori::findOrFail($id);
+        return view('admin.formkategori',array(
+            'judul' => "Edit Kategori | MILISENSI v.1.0",
+            'aktifTag' => "admin",
+            'tagSubMenu' => "kategori",
+            'userName' => $this->users,
+            'roleUser' => $this->role->name,
+            'tag' => 'edit',
+            'kategori' => $kategori->name,
+            'id' => $id,
+        ));
+    }
+
+    /** route:admin.savekategori */
     public function store(Request $request)
     {
-        $rules = array(
-            'kategori' => 'required|max:1',
-        );
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return redirect(route('admin.addkategori'));
-        } else {
-            echo "okay";
-        }
+        $request->validate([
+            'kategori' => 'required|max:255|unique:kategoris,name',
+        ]);
+        $kategori = new Kategori();
+        $kategori->name = $request->kategori;
+        $kategori->save();
+        notify()->success('Data Kategori berhasil ditambahkan!');
+        return redirect()->route('admin.kategori');
+    }
+
+    /**  route:admin.updatekategori */
+    public function update(Request $request)
+    {
+        $request->validate([
+            'kategori' => 'required|max:255',
+            'id' => 'required|numeric',
+        ]);
+        $kategori = Kategori::find($request->id);
+        $kategori->update([
+           'name' => $request->kategori,
+        ]);
+        notify()->success('Data Kategori berhasil diperbaharui!');
+        return redirect()->route('admin.editkategori',$request->id);
+    }
+
+    /** route:admin.deletekategori */
+    public function destroy(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|numeric',
+        ]);
+        $kategori = Kategori::find($request->id);
+        $kategori->delete();
+        notify()->success('Data Kategori berhasil dihapus!');
+        return redirect()->route('admin.kategori');
     }
 }

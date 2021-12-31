@@ -33,10 +33,10 @@
                     <table id="tabelKategori" class="table table-striped">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nama</th>
-                            <th scope="col">Dibuat</th>
-                            <th scope="col">Action</th>
+                            <th scope="col" class="text-center">#</th>
+                            <th scope="col" class="text-center">Nama Kategori</th>
+                            <th scope="col" class="text-center">Dibuat</th>
+                            <th scope="col" class="text-center">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -44,16 +44,35 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                    Footer
-                </div>
-                <!-- /.card-footer-->
             </div>
             <!-- /.card -->
 
         </section>
         <!-- /.content -->
+
+        <!-- START: MODAL HAPUS -->
+        <div class="modal fade" id="modalHapus" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
+                    </div>
+                    <form action="{{route('admin.deletekategori')}}" method="post">
+                        @csrf
+                        @method('delete')
+                        <div class="modal-body">
+                            <input type="hidden" name="id" id="id" value="">
+                            Apakah anda ingin menghapus data ini ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- END: MODAL HAPUS -->
     </div>
     <x-adminlte.footer-layout/>
     <x-adminlte.js-layout/>
@@ -77,12 +96,16 @@
                         }
                     },
                     {data: 'name', class: 'text-left'},
-                    {data: 'created_at', class: 'text-left'},
+                    {data: 'created_at', class: 'text-center',width: '15%'},
                     {data: 'action', width: '15%',class: 'text-center'},
 
                 ],
 
             });
+        });
+        $(document).on("click", ".open-hapus", function () {
+            let fid = $(this).data('id');
+            $('#id').val(fid);
         });
     </script>
 </x-adminlte.template-layout>

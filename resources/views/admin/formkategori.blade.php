@@ -22,10 +22,12 @@
         <section class="content">
             <div class="row justify-content-center">
                 <div class="col-md-6">
+                    <x:notify-messages />
                     <!-- Default box -->
                     <div class="card card-dark">
                         <div class="card-header">
                             <h3 class="card-title">{{($tag != 'add')?'Form Edit':'Form Tambah'}} Kategori</h3>
+
                         </div>
                         <div class="card-body">
                             @if($tag == 'add')
@@ -33,16 +35,29 @@
                                     @csrf
                                     <div class="form-group">
                                         <label for="kategori">Nama Kategori</label>
-                                        <input type="text" class="form-control" id="kategori" name="kategori" placeholder="Masukkan Nama Kategori">
+                                        <input type="text" class="form-control @error('kategori') is-invalid @enderror" id="kategori" name="kategori" placeholder="Masukkan Nama Kategori">
                                         @error('kategori')
-                                        <div class="alert alert-danger">{{ $message }}</div>
+                                        <div class="text-sm text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
                                     <a href="{{route('admin.kategori')}}"><button type="button" class="btn btn-sm btn-danger">Batal</button></a>
                                 </form>
                             @else
-
+                                <form action="{{route('admin.updatekategori')}}" method="post">
+                                    @csrf
+                                    @method('patch')
+                                    <div class="form-group">
+                                        <input type="hidden" name="id" value="{{$id}}">
+                                        <label for="kategori">Nama Kategori</label>
+                                        <input type="text" class="form-control @error('kategori') is-invalid @enderror" id="kategori" name="kategori" value="{{$kategori}}" placeholder="Masukkan Nama Kategori">
+                                        @error('kategori')
+                                        <div class="text-sm text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                                    <a href="{{route('admin.kategori')}}"><button type="button" class="btn btn-sm btn-danger">Batal</button></a>
+                                </form>
                             @endif
                         </div>
                         <!-- /.card-body -->
