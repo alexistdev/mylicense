@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{DashboardController as DashAdmin,UserController as UserAdmin,KategoriController as KategoriAdmin,ProdukController as ProdukAdmin};
+use App\Http\Controllers\User\{DashboardController as DashUser};
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,13 @@ Route::group(['middleware' => ['web','auth','roles']],function() {
         Route::delete('/admin/produk', [ProdukAdmin::class,'destroy'])->name('admin.deleteproduk');
         Route::get('/admin/produk/add', [ProdukAdmin::class,'create'])->name('admin.addproduk');
         Route::get('/admin/produk/{id}/edit', [ProdukAdmin::class,'edit'])->name('admin.editproduk');
+        Route::get('/admin/produk/{id}/detail', [ProdukAdmin::class,'detail'])->name('admin.detailproduk');
+        Route::post('/admin/produk/detail', [ProdukAdmin::class,'savedetail'])->name('admin.savedetailproduk');
+        Route::patch('/admin/produk/detail', [ProdukAdmin::class,'updatedetail'])->name('admin.updatedetailproduk');
+        Route::delete('/admin/produk/detail', [ProdukAdmin::class,'deletedetail'])->name('admin.deletedetailproduk');
+    });
+    Route::group(['roles' => 'user'], function () {
+        Route::get('/user/dashboard', [DashUser::class,'index'])->name('user.dashboard');
     });
 });
 

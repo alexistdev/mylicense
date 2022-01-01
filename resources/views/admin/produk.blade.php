@@ -115,5 +115,9 @@
             let fid = $(this).data('id');
             $('#id').val(fid);
         });
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
     </script>
 </x-adminlte.template-layout>

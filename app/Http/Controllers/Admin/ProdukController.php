@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Detailproduk;
 use App\Models\Kategori;
 use App\Models\Produk;
 use App\Models\User;
@@ -49,16 +50,16 @@ class ProdukController extends Controller
                     return $formatedDate;
                 })
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="' . route('admin.editproduk', $row->id) . '" class="btn btn-success mr-1"><i class="fas fa-edit"></i></a>';
-                    $btn = $btn . '<a href="#" data-toggle="modal" data-target="#modalHapus" data-id="' . $row->id . '" class="open-hapus btn btn-danger mr-1"><i class="fas fa-trash"></i></a>';
-
+                    $btn = '<a href="' . route('admin.editproduk', $row->id) . '"><button class="btn btn-success mr-1" data-toggle="tooltip" data-placement="left" title="Edit"><i class="fas fa-edit"></i></button></a>';
+                    $btn = $btn . '<a href="' . route('admin.detailproduk', $row->id) . '" ><button class="open-hapus btn btn-warning mr-1" data-toggle="tooltip" data-placement="top" title="Detail"><i class="fas fa-clipboard-list"></i></button></a>';
+                    $btn = $btn . '<a href="#" data-toggle="modal" data-target="#modalHapus" data-id="' . $row->id . '" ><button class="open-hapus btn btn-danger mr-1" data-toggle="tooltip" data-placement="left" title="Hapus"><i class="fas fa-trash"></i></button></a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
         return view('admin.produk', array(
-            'judul' => "Kategori | MILISENSI v.1.0",
+            'judul' => "Produk | MILISENSI v.1.0",
             'aktifTag' => "admin",
             'tagSubMenu' => "produk",
             'userName' => $this->users,
@@ -97,6 +98,41 @@ class ProdukController extends Controller
             'kategori_id' => $produk->kategori_id,
             'produkname' => $produk->name,
             'price' => $produk->price,
+            'id' => $id,
+        ));
+    }
+
+    /** route:admin.detailproduk */
+    public function detail(Request $request,$id)
+    {
+        if ($request->ajax()) {
+            $detail = Detailproduk::where('produk_id',$id)->get();
+            return DataTables::of($detail)
+                ->addIndexColumn()
+                ->editColumn('created_at', function ($data) {
+                    $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d-m-Y H:i:s');
+                    return $formatedDate;
+                })
+                ->editColumn('updated_at', function ($data) {
+                    $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d-m-Y H:i:s');
+                    return $formatedDate;
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="#" data-toggle="modal"  data-target="#modalEdit"><button class="open-edit btn btn-success mr-1" data-id="' . $row->id . '" data-prid="' . $row->produk_id . '" data-name="'.$row->name.'" data-toggle="tooltip" data-placement="left" title="Edit"><i class="fas fa-edit"></i></button></a>';
+                    $btn = $btn . '<a href="#" data-toggle="modal" data-target="#modalHapus" ><button class="open-hapus btn btn-danger mr-1" data-id="' . $row->id . '" data-prid="' . $row->produk_id . '" data-toggle="tooltip" data-placement="left" title="Hapus"><i class="fas fa-trash"></i></button></a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        $produk = Produk::find($id);
+        return view('admin.detailproduk',array(
+            'judul' => "Detail Produk | MILISENSI v.1.0",
+            'aktifTag' => "admin",
+            'tagSubMenu' => "produk",
+            'userName' => $this->users,
+            'roleUser' => $this->role->name,
+            'produkName' => $produk->name,
             'id' => $id,
         ));
     }
@@ -147,5 +183,49 @@ class ProdukController extends Controller
         $produk->delete();
         notify()->success('Data Produk berhasil dihapus!');
         return redirect()->route('admin.produk');
+    }
+
+    /** route:admin.savedetailproduk */
+    public function savedetail(Request $request)
+    {
+        $request->validateWithBag('tambah',[
+            'id' => 'required|numeric',
+            'fitur' => 'required|max:255',
+        ]);
+        $detail = new Detailproduk();
+        $detail->produk_id = $request->id;
+        $detail->name = $request->fitur;
+        $detail->save();
+        notify()->success('Data Fitur Produk berhasil ditambah!');
+        return redirect()->route('admin.detailproduk',$request->id);
+    }
+
+    /** route:admin.updatedetailproduk */
+    public function updatedetail(Request $request)
+    {
+        $request->validateWithBag('edit',[
+            'rid' => 'required|numeric',
+            'prid' => 'required|numeric',
+            'fitur' => 'required|max:255',
+        ]);
+        $detail = Detailproduk::find($request->rid);
+        $detail->update([
+           'name' => $request->fitur,
+        ]);
+        notify()->success('Data Fitur Produk berhasil diperbaharui!');
+        return redirect()->route('admin.detailproduk',$request->prid);
+    }
+
+    /** route:admin.deletedetailproduk */
+    public function deletedetail(Request $request)
+    {
+        $request->validate([
+            'dlid' => 'required|numeric',
+            'prodid' => 'required|numeric',
+        ]);
+        $detail = Detailproduk::find($request->dlid);
+        $detail->delete();
+        notify()->success('Data Fitur Produk berhasil dihapus!');
+        return redirect()->route('admin.detailproduk',$request->prodid);
     }
 }
