@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{DashboardController as DashAdmin,UserController as UserAdmin,KategoriController as KategoriAdmin};
+use App\Http\Controllers\Admin\{DashboardController as DashAdmin,UserController as UserAdmin,KategoriController as KategoriAdmin,ProdukController as ProdukAdmin};
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +34,13 @@ Route::group(['middleware' => ['web','auth','roles']],function() {
         Route::delete('/admin/kategori', [KategoriAdmin::class,'destroy'])->name('admin.deletekategori');
         Route::get('/admin/kategori/add', [KategoriAdmin::class,'create'])->name('admin.addkategori');
         Route::get('/admin/kategori/{id}/edit', [KategoriAdmin::class,'edit'])->name('admin.editkategori');
+
+        Route::get('/admin/produk', [ProdukAdmin::class,'index'])->name('admin.produk');
+        Route::post('/admin/produk', [ProdukAdmin::class,'store'])->name('admin.saveproduk');
+        Route::patch('/admin/produk', [ProdukAdmin::class,'update'])->name('admin.updateproduk');
+        Route::delete('/admin/produk', [ProdukAdmin::class,'destroy'])->name('admin.deleteproduk');
+        Route::get('/admin/produk/add', [ProdukAdmin::class,'create'])->name('admin.addproduk');
+        Route::get('/admin/produk/{id}/edit', [ProdukAdmin::class,'edit'])->name('admin.editproduk');
     });
 });
 

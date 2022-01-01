@@ -290,10 +290,10 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="../kanban.html" class="nav-link">
-                            <i class="nav-icon fas fa-columns"></i>
+                        <a href="{{route('admin.produk')}}" class="nav-link {{($tagSubMenu=='produk')?"active":"";}}">
+                            <i class="nav-icon fas fa-boxes"></i>
                             <p>
-                                Kanban Board
+                                Produk
                             </p>
                         </a>
                     </li>
